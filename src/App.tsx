@@ -6,6 +6,7 @@ import { FaTerminal } from 'react-icons/fa';
 type UnicodeChar = {
   value: string;
   codePoint: number;
+  id: string;
 };
 
 function App() {
@@ -33,9 +34,14 @@ function App() {
       const codePoint = parseInt(e.currentTarget.value.replace(/U\+|0x/, ''), 16);
       try {
         const value = String.fromCodePoint(codePoint);
-        setCurrentChar({ value, codePoint });
+        setCurrentChar({
+          value,
+          codePoint,
+          id: toHexString(codePoint) + '-' + Date.now().toString(),
+        });
         e.currentTarget.value = toHexString(codePoint);
-      } catch (e) {
+        console.log(currentChar);
+      } catch (err) {
         setInputError(`Invalid Code Point`);
         setCurrentChar(null);
         return;
@@ -47,8 +53,8 @@ function App() {
   return (
     <div className="App">
       <div className="historyContainer">
-        {history.map((char, index) => (
-          <div className="item" key={`history-${index.toString()}`}>
+        {history.map((char) => (
+          <div className="item" key={char.id}>
             <div className="char">{char.value}</div>
             <div className="codePoint">{toHexString(char.codePoint)}</div>
           </div>
