@@ -3,16 +3,25 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .historyContainer {
   margin-left: 1rem;
+  justify-content: center;
   display: flex;
+  height: 30px;
   .item {
-    color: #555;
-    font-size:24px;
-    font-weight: normal;
+    .char {
+      color: #555;
+      font-size:30px;
+      font-weight: normal;
+      padding-bottom: 5px;
+
+    }
+    .codePoint {
+      font-size: 10px;
+    }
     margin: 0 5px;
   }
 }

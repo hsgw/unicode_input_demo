@@ -27,7 +27,7 @@ function App() {
       e.preventDefault();
       setIsEntered(true);
       if (currentChar) {
-        if (history.length > 31) history.shift();
+        if (history.length > 23) history.shift();
         setHistory([...history, currentChar]);
       }
       const codePoint = parseInt(e.currentTarget.value.replace(/U\+|0x/, ''), 16);
@@ -49,7 +49,8 @@ function App() {
       <div className="historyContainer">
         {history.map((char, index) => (
           <div className="item" key={`history-${index.toString()}`}>
-            {char.value}
+            <div className="char">{char.value}</div>
+            <div className="codePoint">{toHexString(char.codePoint)}</div>
           </div>
         ))}
       </div>
