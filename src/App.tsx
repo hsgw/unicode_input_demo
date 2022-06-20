@@ -23,11 +23,11 @@ function App() {
       setIsEntered(false);
       return;
     }
-    if (e.key == 'Enter') {
+    if (e.key == 'Enter' || e.key == ' ') {
       e.preventDefault();
       setIsEntered(true);
       if (currentChar) {
-        if (history.length > 23) history.shift();
+        if (history.length > 20) history.shift();
         setHistory([...history, currentChar]);
       }
       const codePoint = parseInt(e.currentTarget.value.replace(/U\+|0x/, ''), 16);
