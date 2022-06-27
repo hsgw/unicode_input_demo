@@ -11,7 +11,7 @@ export default defineConfig({
       short_name: 'unicode',
       background_color: '#fff',
       theme_color: '#333',
-      display: 'standalone',
+      display: 'fullscreen',
       "icons": [
         {
             "src": "/icon-192x192.png",
