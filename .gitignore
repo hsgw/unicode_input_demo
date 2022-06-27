@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+manifest.webmanifest
+sw.js
+workbox-b3e22772.js
