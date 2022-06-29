@@ -31,7 +31,7 @@ function App() {
         if (history.length > 20) history.shift();
         setHistory([...history, currentChar]);
       }
-      const codePoint = parseInt(e.currentTarget.value.replace(/U\+|0x/, ''), 16);
+      const codePoint = parseInt(e.currentTarget.value.replace(/U|U\+|0x/, ''), 16);
       try {
         const value = String.fromCodePoint(codePoint);
         setCurrentChar({
