@@ -1,91 +1,205 @@
 import './App.scss';
 
 import React, { useState } from 'react';
-import { FaTerminal } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
 
 type UnicodeChar = {
   value: string;
   codePoint: number;
-  id: string;
+  method: UnicodeMethod;
 };
 
+type UnicodeMethod = null | 'linux' | 'win';
+
 function App() {
-  const [isEntered, setIsEntered] = useState(true);
-  const [isFocused, setIsFocused] = useState(false);
+  const [textAreaValue, setTextAreaValue] = useState('');
+
   const [currentChar, setCurrentChar] = useState<UnicodeChar | null>(null);
   const [inputError, setInputError] = useState('');
-  const [history, setHistory] = useState<UnicodeChar[]>([]);
+  const [currentUnicodeMethod, setCurrentUnicodeMethod] = useState<UnicodeMethod>(null);
+  const [isComposing, setIsComposing] = useState(false);
+  const [inputedCode, setInputedCode] = useState('');
+
+  const [showSetting, setShowSetting] = useState(false);
+  const [showTitleBar, setshowTitleBar] = useState(true);
+  const [showDescription, setshowDescription] = useState(false);
+  const [fontSize, setFontSize] = useState(96);
+  const [bottomMargin, setBottomMargin] = useState(0);
+
+  const changeFontSize = (add: number) => {
+    let temp = fontSize + add;
+    if (temp < 0) temp = 0;
+    setFontSize(temp);
+  };
 
   const toHexString = (n: number) => '0x' + n.toString(16).toUpperCase();
 
-  const handleInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (isEntered) {
-      e.currentTarget.value = '';
-      setIsEntered(false);
-      return;
-    }
-    if (e.key == 'Enter' || e.key == ' ') {
-      e.preventDefault();
-      setIsEntered(true);
-      if (currentChar) {
-        if (history.length > 20) history.shift();
-        setHistory([...history, currentChar]);
-      }
-      const codePoint = parseInt(e.currentTarget.value.replace(/U|U\+|0x/, ''), 16);
-      try {
-        const value = String.fromCodePoint(codePoint);
-        setCurrentChar({
-          value,
-          codePoint,
-          id: toHexString(codePoint) + '-' + Date.now().toString(),
-        });
-        e.currentTarget.value = toHexString(codePoint);
-        console.log(currentChar);
-      } catch (err) {
-        setInputError(`Invalid Code Point`);
-        setCurrentChar(null);
+  const handleInput = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // check starting wincompose
+    if (isComposing) {
+      setIsComposing(false);
+      if (e.key.toLowerCase() == 'u') {
+        e.preventDefault();
+        console.log('start input: wincompose');
+        setCurrentUnicodeMethod('win');
+        setInputedCode('');
         return;
       }
-      setInputError('');
     }
+
+    if (currentUnicodeMethod == null && e.key == 'Alt') {
+      e.preventDefault();
+      setIsComposing(true);
+    }
+
+    // check starting linux
+    if (e.key.toLowerCase() == 'u' && e.ctrlKey && e.shiftKey) {
+      e.preventDefault();
+      console.log('start input: linux');
+      setCurrentUnicodeMethod('linux');
+      setInputedCode('');
+      return;
+    }
+
+    if (currentUnicodeMethod) {
+      e.preventDefault();
+      if (e.key == 'Enter' || e.key == ' ') {
+        const codePoint = parseInt(inputedCode.replace(/U|U\+|0x/, ''), 16);
+        try {
+          const c = String.fromCodePoint(codePoint);
+          setCurrentChar({ value: c, codePoint, method: currentUnicodeMethod });
+          setTextAreaValue(textAreaValue + c);
+          setInputError('');
+        } catch (err) {
+          console.error(err);
+          setInputError(`Invalid Code Point`);
+        }
+        setCurrentUnicodeMethod(null);
+        setInputedCode('');
+        console.log('finish input');
+      } else {
+        if (e.key.length == 1) {
+          console.log(`inputed: ${e.key}`);
+          setInputedCode(inputedCode + e.key);
+        }
+      }
+    }
+  };
+
+  const handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextAreaValue(e.currentTarget.value);
+  };
+
+  const clearTextArea = () => {
+    setTextAreaValue('');
   };
 
   return (
     <div className="App">
-      <div className="historyContainer">
-        {history.map((char) => (
-          <div className="item" key={char.id}>
-            <div className="char">{char.value}</div>
-            <div className="codePoint">{toHexString(char.codePoint)}</div>
-          </div>
-        ))}
-      </div>
-      <div className="currentChar">{currentChar?.value}</div>
-      <div>
-        <div className="errorContainer">
-          {inputError && <div className="error">!! {inputError} !!</div>}
-          {!isFocused && <div className="error">!! Focus TextBox !!</div>}
-        </div>
-        <div className={'inputContainer ' + (isFocused ? '' : 'unfocus')}>
-          <div className="icon">
-            <FaTerminal />
-          </div>
+      {showTitleBar && (
+        <div className="titleBar">
+          <div className="title">Unicode Demo App</div>
           <div>
-            <input
-              className=""
-              type="text"
-              placeholder="HEX"
-              onKeyDown={handleInput}
-              onFocus={() => {
-                setIsFocused(true);
+            <a href="https://github.com/hsgw/unicode_input_demo/">
+              <div className="centered">
+                <FaGithub />
+                <span>Github</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      )}
+      <div className="main">
+        <textarea
+          className="textarea"
+          id="text"
+          wrap="hard"
+          spellCheck="false"
+          placeholder="Type here"
+          autoFocus
+          value={textAreaValue}
+          onChange={handleChangeTextArea}
+          onKeyDown={handleInput}
+          style={{ fontSize: `${fontSize}px` }}
+        ></textarea>
+        {showSetting && (
+          <div className="setting">
+            <div className="containt">
+              <div className="title">Setting</div>
+              <button
+                type="button"
+                onClick={() => {
+                  changeFontSize(4);
+                }}
+              >
+                Font size++
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  changeFontSize(-4);
+                }}
+              >
+                Font size--
+              </button>
+              <hr />
+              <button
+                type="button"
+                onClick={() => {
+                  if (bottomMargin != 0) setBottomMargin(0);
+                  else setBottomMargin(120);
+                }}
+              >
+                Add bottom margin
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setshowTitleBar(!showTitleBar);
+                }}
+              >
+                Toggle TitleBar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setshowDescription(!showDescription);
+                }}
+              >
+                Toggle Description
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="statusBar">
+        <div className="status">
+          <div className="item">{inputError ? inputError : 'No Error'}</div>
+          <div className="item">
+            {currentChar
+              ? `${toHexString(currentChar.codePoint)} - ${currentChar.method}`
+              : ''}
+          </div>
+        </div>
+        <div className="setting">
+          <div className="item">
+            <button type="button" onClick={clearTextArea}>
+              clear
+            </button>
+          </div>
+          <div className="item">
+            <button
+              type="button"
+              onClick={() => {
+                setShowSetting(!showSetting);
               }}
-              onBlur={() => {
-                setIsFocused(false);
-              }}
-            ></input>
+            >
+              setting
+            </button>
           </div>
         </div>
       </div>
+      <div className="bottomMargin" style={{ height: `${bottomMargin}px` }}></div>
     </div>
   );
 }
