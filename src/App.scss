@@ -154,16 +154,19 @@ button {
 .unicodeExample {
   margin-bottom: 0.75rem;
   display: flex;
+  align-items: center;
   .char {
     width: 3rem;
+    margin-right: 1rem;
     font-size: 2rem;
     font-weight: 500;
     text-align: center;
   }
   .code {
     margin-left: 0.5rem;
+    font-family:monospace;
     .hex {
-      font-size: smaller;
+      font-size: x-small;
     }
     .bin {
       font-size: large;

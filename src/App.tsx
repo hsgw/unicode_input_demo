@@ -144,7 +144,7 @@ function App() {
                 This device is designed to input Unicode code points as binary numbers
                 directly.
               </p>
-              <h2>Example</h2>
+              <h2>Examples</h2>
               <UnicodeExample char="A" />
               <UnicodeExample char="あ" />
               <UnicodeExample char="打" />
