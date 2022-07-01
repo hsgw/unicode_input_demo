@@ -1,7 +1,9 @@
 import './App.scss';
 
-import React, { useState } from 'react';
-import { FaGithub } from 'react-icons/fa';
+import React, { useEffect, useRef, useState } from 'react';
+import { FaBars, FaGithub, FaTimesCircle } from 'react-icons/fa';
+
+import UnicodeExample from './UnicodeExample';
 
 type UnicodeChar = {
   value: string;
@@ -12,6 +14,8 @@ type UnicodeChar = {
 type UnicodeMethod = null | 'linux' | 'win';
 
 function App() {
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
   const [textAreaValue, setTextAreaValue] = useState('');
 
   const [currentChar, setCurrentChar] = useState<UnicodeChar | null>(null);
@@ -26,13 +30,21 @@ function App() {
   const [fontSize, setFontSize] = useState(96);
   const [bottomMargin, setBottomMargin] = useState(0);
 
+  useEffect(() => {
+    if (textAreaRef.current) {
+      // scroll to bottom
+      textAreaRef.current.scrollTop = textAreaRef.current.scrollHeight;
+    }
+  });
+
+  const toHexString = (n: number) => '0x' + n.toString(16).toUpperCase();
+  const toBinString = (n: number) => n.toString(2);
+
   const changeFontSize = (add: number) => {
     let temp = fontSize + add;
     if (temp < 0) temp = 0;
     setFontSize(temp);
   };
-
-  const toHexString = (n: number) => '0x' + n.toString(16).toUpperCase();
 
   const handleInput = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // check starting wincompose
@@ -112,6 +124,7 @@ function App() {
       <div className="main">
         <textarea
           className="textarea"
+          ref={textAreaRef}
           id="text"
           wrap="hard"
           spellCheck="false"
@@ -122,9 +135,28 @@ function App() {
           onKeyDown={handleInput}
           style={{ fontSize: `${fontSize}px` }}
         ></textarea>
+        <div className="description">
+          <div className="content">
+            <h1>Ultimate Input Machine</h1>
+            <hr />
+            <p>This is an input device with 18 toggle switches and 1 button.</p>
+            <p>
+              This device is designed to input Unicode code points as binary numbers
+              directly.
+            </p>
+            <h2>Example</h2>
+            <UnicodeExample char="A" />
+            <UnicodeExample char="あ" />
+            <UnicodeExample char="打" />
+            <UnicodeExample char="៘" />
+            <UnicodeExample char="⌨" />
+            <UnicodeExample char="😀" />
+            <UnicodeExample char="👍" />
+          </div>
+        </div>
         {showSetting && (
           <div className="setting">
-            <div className="containt">
+            <div className="content">
               <div className="title">Setting</div>
               <button
                 type="button"
@@ -183,18 +215,19 @@ function App() {
         </div>
         <div className="setting">
           <div className="item">
-            <button type="button" onClick={clearTextArea}>
-              clear
+            <button type="button" title="clear" onClick={clearTextArea}>
+              <FaTimesCircle size="1em" />
             </button>
           </div>
           <div className="item">
             <button
               type="button"
+              title="setting"
               onClick={() => {
                 setShowSetting(!showSetting);
               }}
             >
-              setting
+              <FaBars />
             </button>
           </div>
         </div>

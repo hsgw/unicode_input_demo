@@ -24,7 +24,7 @@ button {
   display: flex;
   justify-content: flex-start;
   width:100%;
-  padding: 0.5rem 1.5rem;
+  padding: 2rem 1rem 0.5rem 0.5rem;
   color: whitesmoke;
   background-color: #333;
   .title {
@@ -40,20 +40,48 @@ button {
 .main {
   display: flex;
   textarea {
-    box-sizing: border-box;
     width: 100%;
-    height: 100%;
-    padding: 1rem 1rem 0 1rem;
+    min-height: 100%;
+    padding: 2rem 2rem 1rem 2rem;
     text-align: left;
     resize: none;
 
-    line-height: 1.2;
+    line-height: 1.5;
     letter-spacing:0px;
 
     &:focus {
       outline: none;
     }
   }
+
+  .description {
+    width: 600px;
+    height: 100%;
+    padding: 1rem;
+    .content {
+      padding: 1rem;
+      border: 4px solid #333;
+      h1 {
+        font-size: x-large;
+        font-weight: 900;
+        margin-bottom: 0.5rem;
+      }
+      h2 {
+        font-size: large;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      hr {
+        margin: 0.5rem -0.5rem;
+      }
+      p {
+        line-height: 1.5;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
   .setting {
     display: flex;
     flex-direction: column;
@@ -63,7 +91,7 @@ button {
     width: 500px;
     height: 100%;
     padding: 1rem;
-    .containt {
+    .content {
       box-sizing: border-box;
       padding: 1rem;
       border: 8px solid #333;
@@ -99,23 +127,51 @@ button {
   display: flex;
   justify-content: flex-start;
   width:100%;
-  padding: 0.5rem;
-  padding-bottom: 120px;
+  padding: 0.5rem 0.5rem 2rem 0.5rem;
   color: whitesmoke;
   background-color: #333;
   .status {
     display: flex;
+    .item {
+      padding: 0 0.5rem;
+    }
   }
   .setting {
     display: flex;
     margin-left: auto;
-  }
-  .item {
-    padding: 0 0.5rem;
+    margin-right: 1rem;
+    .item {
+      padding: 0 0 0 2rem;
+    }
   }
 }
 
 .bottomMargin {
   width:100%;
   background-color: #333;
+}
+
+.unicodeExample {
+  margin-bottom: 0.75rem;
+  display: flex;
+  .char {
+    width: 3rem;
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+  }
+  .code {
+    margin-left: 0.5rem;
+    .hex {
+      font-size: smaller;
+    }
+    .bin {
+      font-size: large;
+      span:nth-child(3),
+      span:nth-child(11)
+      {
+        margin-left: 0.5rem;
+      }
+    }
+  }
 }
