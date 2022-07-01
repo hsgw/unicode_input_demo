@@ -38,7 +38,6 @@ function App() {
   });
 
   const toHexString = (n: number) => '0x' + n.toString(16).toUpperCase();
-  const toBinString = (n: number) => n.toString(2);
 
   const changeFontSize = (add: number) => {
     let temp = fontSize + add;
@@ -135,25 +134,27 @@ function App() {
           onKeyDown={handleInput}
           style={{ fontSize: `${fontSize}px` }}
         ></textarea>
-        <div className="description">
-          <div className="content">
-            <h1>Ultimate Input Machine</h1>
-            <hr />
-            <p>This is an input device with 18 toggle switches and 1 button.</p>
-            <p>
-              This device is designed to input Unicode code points as binary numbers
-              directly.
-            </p>
-            <h2>Example</h2>
-            <UnicodeExample char="A" />
-            <UnicodeExample char="あ" />
-            <UnicodeExample char="打" />
-            <UnicodeExample char="៘" />
-            <UnicodeExample char="⌨" />
-            <UnicodeExample char="😀" />
-            <UnicodeExample char="👍" />
+        {showDescription && (
+          <div className="description">
+            <div className="content">
+              <h1>Ultimate Input Machine</h1>
+              <hr />
+              <p>This is an input device with 18 toggle switches and 1 button.</p>
+              <p>
+                This device is designed to input Unicode code points as binary numbers
+                directly.
+              </p>
+              <h2>Example</h2>
+              <UnicodeExample char="A" />
+              <UnicodeExample char="あ" />
+              <UnicodeExample char="打" />
+              <UnicodeExample char="៘" />
+              <UnicodeExample char="⌨" />
+              <UnicodeExample char="😀" />
+              <UnicodeExample char="👍" />
+            </div>
           </div>
-        </div>
+        )}
         {showSetting && (
           <div className="setting">
             <div className="content">
