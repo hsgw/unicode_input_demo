@@ -9,3 +9,6 @@ Ref: https://github.com/qmk/qmk_firmware/blob/master/docs/feature_unicode.md
 npm install
 npm run dev
 ```
+
+## license
+MIT, see LICENSE.

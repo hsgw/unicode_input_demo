@@ -137,7 +137,10 @@ function App() {
         {showDescription && (
           <div className="description">
             <div className="content">
-              <h1>Ultimate Input Machine</h1>
+              <h1>
+                Ultimate Unicode <br />
+                Input Machine
+              </h1>
               <hr />
               <p>This is an input device with 18 toggle switches and 1 button.</p>
               <p>
@@ -145,13 +148,24 @@ function App() {
                 directly.
               </p>
               <h2>Examples</h2>
+              <div className="encoder">
+                <div>
+                  <img
+                    src="./qr-unicode-encoder.png"
+                    alt="qrcode for unicode encoder app"
+                    width="70px"
+                  ></img>
+                </div>
+                <div className="desc">
+                  To convert any charctor to codepoint, <br />
+                  use encoder app
+                </div>
+              </div>
               <UnicodeExample char="A" />
               <UnicodeExample char="あ" />
-              <UnicodeExample char="打" />
-              <UnicodeExample char="៘" />
-              <UnicodeExample char="⌨" />
               <UnicodeExample char="😀" />
               <UnicodeExample char="👍" />
+              <UnicodeExample char="𰻞" />
             </div>
           </div>
         )}
