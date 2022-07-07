@@ -3,6 +3,7 @@ import './App.scss';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaBars, FaGithub, FaTimesCircle } from 'react-icons/fa';
 
+import qr_code from './qr_unicode_encoder.png';
 import UnicodeExample from './UnicodeExample';
 
 type UnicodeChar = {
@@ -151,7 +152,7 @@ function App() {
               <div className="encoder">
                 <div>
                   <img
-                    src="./qr-unicode-encoder.png"
+                    src={qr_code}
                     alt="qrcode for unicode encoder app"
                     width="70px"
                   ></img>
